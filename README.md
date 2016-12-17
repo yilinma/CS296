@@ -5,3 +5,4 @@ This project contains 16 rooms, 11 objects, 26 different commands and some puzzl
 ## Instructions
 
 Enter `lein run` to start the game enter `command` in game to view the command cheat sheet.
+Good luck have fun!

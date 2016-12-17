@@ -9,49 +9,52 @@
   {:basement {:desc " The room is very dark and there is only a lit candle. There is also an entrance to a dry well beside you. Type search to search around the room. Directions: up, down. "
               :title "in the basement"
               :dir {:down :well :up :hallway}
-              :contents #{:letter}}
+              :contents #{:mail}}
    :well {:desc "Surrounded by 3 crocodiles in the dry well. Bad End. Enter ^C to exit the game. "
           :title "died"
           :dir {}
           :contents #{}}
-   :hallway {:desc "The hallway has with 2 doors on your left numbered with 1,2 and 2 doors on your right numbered with 3,4 and a locked door in the end of the hallway. Type down to go to the basement, room1 to enter the first room, room2 to enter the second room, room3 to enter the third room, room4 to enter the fourth room, unlock to open the locked door and south to enter that door. "
+   :hallway {:desc "The hallway has 2 doors on your left numbered with 1,2 and 2 doors on your right numbered with 3,4 and a locked door in the end of the hallway. Type down to go to the basement, room1 to enter the first room, room2 to enter the second room, room3 to enter the third room, room4 to enter the fourth room, unlock to open the locked door and south to enter that door. "
              :title "in the hallway"
              :dir {:down :basement :room1 :bedroom1 :room2 :bedroom2 :room3 :bedroom3 :room4 :bedroom4 :south :mainroom}
              :contents #{}}
-   :bedroom1 {:desc "There is an old television on the desk. However, TV is turned off and you couldn't find the switch to turn it on. Type back to leave this room. "
+   :bedroom1 {:desc "There is an old television on the desk. However, the TV is turned off and you couldn't find the switch to turn it on. Type back to leave this room. "
               :title "in room1"
-              :dir {:back :hallway}}
-   :bedroom2 {:desc "This room is a Karaoke room. Enter search to search around this room and back to leave the room. "
-              :title "in Karaoke room"
+              :dir {:back :hallway}
+              :contents #{}}
+   :bedroom2 {:desc "This room is the Karaoke room. Enter search to search around this room and back to leave the room. "
+              :title "in the Karaoke room"
               :dir {:search :search :back :hallway}
               :contents #{:remote}}
-   :bedroom3 {:desc "This room has a drawing of grassland on the wall and a box locked by a number lock on the floor. Type openbox to try open the box. "
+   :bedroom3 {:desc "This room has a drawing of grassland on the wall and a safe box locked by a number lock on the floor. Type openbox to try open the box. "
               :title "in the exhibition room"
               :dir {:back :hallway}
               :contents #{:silverkey}}
    :bedroom4 {:desc "This room is a normal bedroom with a large bed that looks very comfortable. Type sleep to get some rest or back to leave the room. "
               :title "in the bedroom"
-              :dir {:sleep :sleep :back :hallway}}
-   :mainroom {:desc "This room is quiet large. Enter up to go up the stairs, south to enter the dining room, north to enter the hallway, east to walk to the front entrance, and search to search the room. "
+              :dir {:sleep :sleep :back :hallway}
+              :contents #{}}
+   :mainroom {:desc "This room is quite large. Enter up to go up the stairs, south to enter the dining room, north to enter the hallway, east to walk to the front entrance, and search to search the room. "
               :title "in the main room"
               :dir {:up :secondfloor :south :dinning :north :hallway :east :frontentrance :search :search}
               :contents #{:laptop}}
-   :frontentrance {:desc "The door to the out side is locked and you need to find the diamond key to open it. Type search to search the room, back to leave the room. "
+   :frontentrance {:desc "The door to the outside is locked and you need to find the diamond key to open it. Type search to search the room, west to leave the room. "
                    :title "in the front entrance"
-                   :dir {:west :mainroom}}
+                   :dir {:west :mainroom}
+                   :contents #{}}
    :dinning {:desc "This room has a long table and some chairs, the table seems new since it is not covered by dust. Directions: north, west, east, search. "
              :title "in the dinning room"
              :dir {:north :mainroom :east :restroom :west :kitchen :search :search}
              :contents #{:flashlight}}
-   :restroom {:desc "This room has a tub and a sink. Directions: west, search. "
-              :title "in the restroom"
+   :restroom {:desc "This room has a tub and a sink. The tub and the sink are very clean. Directions: west, search. "
+              :title "in the first floor restroom"
               :dir {:west :dinning :search :search}
               :contents #{:bottle_water}}
-   :kitchen {:desc "This room has a stove and a refridgerator. Directions: east, search. "
+   :kitchen {:desc "This room has a stove and a refridgerator. Is it possible that there are something in the fridge? Directions: east, search. "
              :title "in the kitchen"
              :dir {:east :dinning}
              :contents #{:apple}}
-   :secondfloor {:desc "This is a hallway that connects to serveral different rooms, there is also a dark brown wardrobe on your west side. Directions: north, east, south, down. "
+   :secondfloor {:desc "This is a hallway that connects serveral different rooms, there is also a dark brown wardrobe on your west side. Directions: north, east, south, down. "
                  :title "in the hallway on secondfloor"
                  :dir {:north :shop :east :library :south :restroom2 :down :mainroom}
                  :contents #{:diamondkey}}
@@ -59,12 +62,12 @@
           :title "in the shop"
           :dir {:south :secondfloor}
           :contents #{:goldkey}}
-   :library {:desc "There are many bookshelfs in this room. Direction: west. "
+   :library {:desc "This room is very retro, with a chandelier and many wooden bookshelves on the wall. Direction: west. "
              :title "in the library"
              :dir {:west :secondfloor :search :search}
              :contents #{:book}}
    :restroom2 {:desc "This restroom room is very dark and you can't see anything. Direction: north. "
-               :title "in the restroom"
+               :title "in the second floor restroom"
                :dir {:north :secondfloor :search :search}
                :contents #{:goldbar}}})
 
@@ -104,8 +107,8 @@
   (update-in player [:tick] inc))
 
 (defn readl [player]
-  (if (contains? (player :inventory) :letter)
-    (println "Welcome. All the windows in this building are sealed and the exit door is locked. Type command to view all commands, inventory to check what you have, search to search around the room. You only have 100 turns to escape. Good luck. ")
+  (if (contains? (player :inventory) :mail)
+    (println "Welcome. All the windows in this building are sealed and the exit door is locked. Type command to view all commands, inventory to check what you have, search to search around the room. Good luck. ")
     (println "Can't do that right now. "))
   player)
 
@@ -130,32 +133,32 @@
   ;;(def loc (player :location))
   ;;(println loc)
   ;;(println ((the-map (player :location)) :contents))
-  ;;(println (contains? ((the-map (player :location)) :contents) :letter))
+  ;;(println (contains? ((the-map (player :location)) :contents) :mail))
   ;;(def retval 10)
   ;; Need to debug this part!!!
-  (if (= (and (and (contains? ((the-map (player :location)) :contents) :letter) (not (contains? (player :inventory) :letter))) (= (player :location) :basement)) true)
+  (if (= (and (and (contains? ((the-map (player :location)) :contents) :mail) (not (contains? (player :inventory) :mail))) (= (player :location) :basement)) true)
     (do
       (def retval 20)
-      (println "You found a letter on the floor. This letter has been added to your inventory and you can use command readl to read the letter. ")
+      (println "You found a mail on the floor. This mail has been added to your inventory and you can use command readl to read the mail. ")
       ;;(update-in the-map [(player :location) :contents] nil)
-      ;;(disj ((the-map (player :location)) :contents) :letter) ;; remove the letter in this room
-      (update-in player [:inventory] #(conj % :letter)) ;; adding the letter
+      ;;(disj ((the-map (player :location)) :contents) :mail) ;; remove the mail in this room
+      (update-in player [:inventory] #(conj % :mail)) ;; adding the mail
       ;;(def retval 20)
 )
     (do
       (if (= (and (= (player :location) :bedroom2) (not (contains? (player :inventory) :remote))) true)
         (do
-          (println "You found a TV remote behind the sofa. This remote has been added to your inventory and you can you turnontv to use it. ")
+          (println "You found a TV remote behind the sofa. This remote has been added to your inventory and you can use command turnontv to use it. ")
           (update-in player [:inventory] #(conj % :remote)))
         (do
           (if (= (and (= (player :location) :dinning) (not (contains? (player :inventory) :flashlight))) true)
             (do
-              (println "You found a working flashlight under the chair. This flashlight has been added to your inventory and you can use flashlight to use it. ")
+              (println "You found a working flashlight under the chair. This flashlight has been added to your inventory and you can use command flashlight to use it. ")
               (update-in player [:inventory] #(conj % :flashlight)))
             (do
               (if (= (and (= (player :location) :restroom) (not (contains? (player :inventory) :bottle_water))) true)
                 (do
-                  (println "You found a bottle of water in one of the cabinet in this room. This bottle of water has been added to your inventory and you can use drink to drink it. ")
+                  (println "You found a bottle of water in one of the cabinet in this room. This bottle of water has been added to your inventory and you can use command drink to drink it. ")
                   (update-in player [:inventory] #(conj % :bottle_water)))
                 (do
                   (if (= (and (= (player :location) :kitchen) (= (player :openedfridge) 0)) true)
@@ -185,7 +188,7 @@
     (do
       (if (= (and (= (player :location) :hallway) (= (player :silverdoor) 0) (= (player :silverkey) 0)) true)
         (do (println "You don't have the silverkey to open that door right now. ")
-            player))
+            player)
       (do
         (if (= (player :location) :frontentrance)
           (do
@@ -199,7 +202,7 @@
                 player)))
           (do
             (println "You can't do that right now")
-            player))))))
+            player)))))))
 
 (defn turnontv [player]
   (if (= (and (= (player :location) :bedroom1) (contains? (player :inventory) :remote)) true)
@@ -246,7 +249,7 @@
           (do
             (println "You entered the right password for the number lock and the box is now opened. You found a silver key in the box and it is now avaliable in your inventory")
             (update-in player [:inventory] #(conj % :silverkey)))
-          (do (println "Seems that that digit combination is not quiet right")
+          (do (println "Seems that that digit combination is not quite right")
               player))))
     (do
       (println "You can't do that right now")
@@ -255,10 +258,19 @@
 (defn sleep [player]
   (if (= (player :location) :bedroom4)
     (do
+
+      (if (not (= (player :sleep) 0))
+        (do
+          (println "You already got enough sleep")
+          player)
+        (do
       (println "You got onto the bed and fell asleep quickly")
       (println "zzzzzzzzzzzz")
       (println "8 hours later")
-      (update-in player [:sleep] inc))
+      (update-in player [:sleep] inc)
+
+
+      )))
     (do
       (println "It is very uncomfortable to try to sleep without a bed and you couldn't fall asleep")
      ;; (update-in player [:tick] inc)
@@ -298,12 +310,12 @@
 (defn solvepuzzle [player]
   (if (contains? (player :inventory) :laptop)
     (do
-      (println "You turned the laptop and prairielearn automatically showed up on screen, asking you to solve a puzzle")
-      (println "If Planck's age = 2 * John's age and Planck is 16 years older than John, how old is John? Please input your answer")
+      (println "You turned the laptop on and prairielearn automatically showed up on screen, asking you to solve a puzzle")
+      (println "If Planck's age = 2 * John's age and Planck is 16 years older than John, how old is John? Please input your answer(real number only)")
       (let [agein (read-line)]
         (if (= agein "16")
           (do
-            (println "Good job!!! Hint:enter move in room with wardrobe to esc"))
+            (println "Good job!!! Hint:enter `move` in room with wardrobe to esc"))
           (println "Too bad... Try harder next time please")))
 
       player)
@@ -314,6 +326,12 @@
 (defn move [player]
   (if (= (player :location) :secondfloor)
     (do
+      (if (contains? (player :inventory) :diamondkey)
+        (do
+          (println "you already obtained the diamondkey so there is no need to move the wardrobe again. ")
+          player)
+      (do
+
       (if (or (not= (player :strength) 0) (not= (player :sleep) 0))
         (do
           (println "cong you have found the secret command!!")
@@ -323,13 +341,15 @@
             (do
               (println "You used your gold key and opened the box")
               (println "With a surprise, you found a diamond key in the safe")
+              (println "After a short pause, the wardrobe moved back to it's original position automatically")
               (update-in player [:inventory] #(conj % :diamondkey)))
             (do
               (println "Unfortunatly you don't have a gold key in your inventory to open this safe")
+              (println "With a pause, the wardrobe moved back to it's original position automatically")
               player)))
         (do
           (println "The wardrobe is so heavy, get some sleep and eat something please")
-          player)))
+          player)))))
     (do
       (println "You can't do that right now")
       player)))
@@ -337,8 +357,8 @@
 (defn talk [player]
   (if (not (contains?  (player :inventory) :goldkey))
     (do
-      (println "Merchandise: Hello, I can sell you a gold key for half of your goldbar")
-      (println "Do you want to take the deal? You can say yes or no. It's your own choice")
+      (println "Merchandise: Hello, I can sell you a gold key for half of your goldbar. ")
+      (println "Do you want to take the deal? You can say yes or no. It's your own choice. ")
       (let [reply (read-line)]
         (do
           (if (= reply "yes")
@@ -359,7 +379,7 @@
                 player))))))
 
     (do
-      (println "Good luck man  :)")
+      (println "You alread got all you need. Good luck man  :)")
       player)))
 
 (defn respond [player command]
@@ -407,7 +427,6 @@
           player)))
 
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
   (loop [local-map the-map
          local-player adventurer]
